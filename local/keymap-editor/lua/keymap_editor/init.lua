@@ -283,7 +283,7 @@ local function select(items, opts, on_pick, back)
     actions = {
       go_back = function(picker)
         if vim.api.nvim_get_current_line() ~= "" then
-          vim.api.nvim_feedkeys(vim.keycode("<BS>"), "n", false) -- normal backspace
+          vim.api.nvim_feedkeys("-", "n", false) -- type a normal "-"
           return
         end
         picker:close()
@@ -292,7 +292,7 @@ local function select(items, opts, on_pick, back)
         end
       end,
     },
-    win = { input = { keys = { ["<BS>"] = { "go_back", mode = { "i", "n" } } } } },
+    win = { input = { keys = { ["-"] = { "go_back", mode = { "i", "n" } } } } },
   })
 end
 
@@ -346,9 +346,9 @@ local function input(opts, on_done, back, allow_empty)
 
   vim.keymap.set({ "i", "n" }, "<Esc>", close, o)
 
-  vim.keymap.set("i", "<BS>", function()
+  vim.keymap.set("i", "-", function()
     if text() ~= "" then
-      return "<BS>"
+      return "-"
     end
     vim.schedule(function()
       close()
@@ -487,7 +487,7 @@ function M.open()
     "Add a keymap",
     "Remove a saved change",
     "Open keymaps.json",
-  }, { prompt = "Keymap editor (BS = back, Esc = close)" }, function(choice)
+  }, { prompt = "Keymap editor (- = back, Esc = close)" }, function(choice)
     if choice == "Browse by plugin" then
       browse_plugins(M.open)
     elseif choice == "Browse all keymaps" then
